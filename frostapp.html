@@ -142,7 +142,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-500 text-sm">Składniki</p>
-                            <h2 class="text-3xl font-bold text-frostblue-dark">42</h2>
+                            <h2 class="text-3xl font-bold text-frostblue-dark" id="totalIngredients">0</h2>
                         </div>
                         <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
                             <i class="fas fa-flask text-frostblue text-xl"></i>
@@ -150,7 +150,7 @@
                     </div>
                     <div class="flex items-center mt-4">
                         <span class="text-green-500 flex items-center text-sm">
-                            <i class="fas fa-arrow-up mr-1"></i> 8%
+                            <i class="fas fa-arrow-up mr-1"></i> <span id="ingredientsChange">0%</span>
                         </span>
                         <span class="text-gray-500 text-sm ml-2">od ostatniego miesiąca</span>
                     </div>
@@ -159,7 +159,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-500 text-sm">Próbki</p>
-                            <h2 class="text-3xl font-bold text-frostblue-dark">18</h2>
+                            <h2 class="text-3xl font-bold text-frostblue-dark" id="totalSamples">0</h2>
                         </div>
                         <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
                             <i class="fas fa-flask-vial text-frostblue text-xl"></i>
@@ -167,7 +167,7 @@
                     </div>
                     <div class="flex items-center mt-4">
                         <span class="text-green-500 flex items-center text-sm">
-                            <i class="fas fa-arrow-up mr-1"></i> 12%
+                            <i class="fas fa-arrow-up mr-1"></i> <span id="samplesChange">0%</span>
                         </span>
                         <span class="text-gray-500 text-sm ml-2">od ostatniego miesiąca</span>
                     </div>
@@ -176,15 +176,15 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-500 text-sm">Średnia ocena</p>
-                            <h2 class="text-3xl font-bold text-frostblue-dark">4.2</h2>
+                            <h2 class="text-3xl font-bold text-frostblue-dark" id="averageRating">0.0</h2>
                         </div>
                         <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
                             <i class="fas fa-star text-frostblue text-xl"></i>
                         </div>
                     </div>
                     <div class="flex items-center mt-4">
-                        <span class="text-red-500 flex items-center text-sm">
-                            <i class="fas fa-arrow-down mr-1"></i> 3%
+                        <span class="text-gray-500 flex items-center text-sm">
+                            <i class="fas fa-minus mr-1"></i> <span id="ratingChange">0%</span>
                         </span>
                         <span class="text-gray-500 text-sm ml-2">od ostatniego miesiąca</span>
                     </div>
@@ -194,36 +194,10 @@
             <!-- Alerts -->
             <div class="mb-8">
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Alerty magazynowe</h2>
-                <div class="bg-white rounded-lg shadow overflow-hidden">
-                    <div class="bg-red-50 border-l-4 border-red-500 p-4 flex items-center justify-between">
-                        <div class="flex items-center">
-                            <i class="fas fa-exclamation-circle text-red-500 mr-3 text-lg"></i>
-                            <div>
-                                <p class="font-medium">Olejek jojoba</p>
-                                <p class="text-sm text-gray-600">Pozostało tylko 50ml (poniżej minimum)</p>
-                            </div>
-                        </div>
-                        <button class="text-frostblue hover:underline">Zamów</button>
-                    </div>
-                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 flex items-center justify-between">
-                        <div class="flex items-center">
-                            <i class="fas fa-exclamation-triangle text-yellow-500 mr-3 text-lg"></i>
-                            <div>
-                                <p class="font-medium">Olejek z drzewa sandałowego</p>
-                                <p class="text-sm text-gray-600">Pozostało tylko 15ml (niski stan)</p>
-                            </div>
-                        </div>
-                        <button class="text-frostblue hover:underline">Zamów</button>
-                    </div>
-                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 flex items-center justify-between">
-                        <div class="flex items-center">
-                            <i class="fas fa-exclamation-triangle text-yellow-500 mr-3 text-lg"></i>
-                            <div>
-                                <p class="font-medium">Witamina E</p>
-                                <p class="text-sm text-gray-600">Pozostało tylko 20ml (niski stan)</p>
-                            </div>
-                        </div>
-                        <button class="text-frostblue hover:underline">Zamów</button>
+                <div class="bg-white rounded-lg shadow overflow-hidden" id="alertsContainer">
+                    <!-- Alerty będą dodawane dynamicznie -->
+                    <div class="p-4 text-center text-gray-500" id="noAlertsMessage">
+                        Brak alertów magazynowych
                     </div>
                 </div>
             </div>
@@ -232,7 +206,7 @@
             <div>
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-bold text-gray-800">Ostatnie próbki</h2>
-                    <a href="#" class="text-frostblue hover:underline">Zobacz wszystkie</a>
+                    <a href="samples.html" class="text-frostblue hover:underline">Zobacz wszystkie</a>
                 </div>
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <table class="min-w-full divide-y divide-gray-200">
@@ -246,71 +220,11 @@
                                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Akcje</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="font-medium text-gray-900">Górska Bryza</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">27.02.2025</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jan Kowalski</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex text-yellow-400">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="#" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-eye"></i></a>
-                                    <a href="#" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-edit"></i></a>
-                                    <a href="#" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="font-medium text-gray-900">Zimowy Las</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">26.02.2025</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Piotr Nowak</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">7</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex text-yellow-400">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="#" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-eye"></i></a>
-                                    <a href="#" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-edit"></i></a>
-                                    <a href="#" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="font-medium text-gray-900">Mroźny Wiking</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">25.02.2025</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Anna Kowalska</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">4</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex text-yellow-400">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="#" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-eye"></i></a>
-                                    <a href="#" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-edit"></i></a>
-                                    <a href="#" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></a>
+                        <tbody class="bg-white divide-y divide-gray-200" id="samplesList">
+                            <!-- Próbki będą dodawane dynamicznie -->
+                            <tr id="noSamplesRow">
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                    Brak próbek do wyświetlenia
                                 </td>
                             </tr>
                         </tbody>
@@ -320,9 +234,12 @@
         </main>
     </div>
 
-    <script>
+    <script type="module">
+        import { auth, db } from './firebase-config.js';
+        import { collection, getDocs, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
         // Check if user is logged in
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
             
             if (!currentUser) {
@@ -353,6 +270,7 @@
             document.getElementById('logoutButton').addEventListener('click', function(e) {
                 e.preventDefault();
                 sessionStorage.removeItem('currentUser');
+                localStorage.removeItem('notificationsRead');
                 window.location.href = 'login.html';
             });
 
@@ -361,14 +279,272 @@
             const notificationCount = document.getElementById('notificationCount');
             
             if (notificationButton) {
+                // Sprawdź, czy powiadomienia zostały już przeczytane
+                const notificationsRead = localStorage.getItem('notificationsRead') === 'true';
+                
+                if (notificationsRead) {
+                    notificationCount.textContent = "0";
+                    notificationCount.classList.add('hidden');
+                }
+                
                 notificationButton.addEventListener('click', function() {
                     // Symulacja przeczytania powiadomień
                     notificationCount.textContent = "0";
                     notificationCount.classList.add('hidden');
+                    localStorage.setItem('notificationsRead', 'true');
                     alert('Wszystkie powiadomienia zostały oznaczone jako przeczytane');
                 });
             }
+
+            // Load dashboard data
+            await loadDashboardData();
         });
+
+        // Load dashboard data from Firestore
+        async function loadDashboardData() {
+            try {
+                // Pobierz dane o składnikach
+                await loadIngredientsData();
+                
+                // Pobierz dane o próbkach
+                await loadSamplesData();
+                
+                // Pobierz dane o ocenach
+                await loadRatingsData();
+                
+                // Pobierz alerty magazynowe
+                await loadInventoryAlerts();
+            } catch (error) {
+                console.error("Error loading dashboard data:", error);
+            }
+        }
+
+        // Load ingredients data
+        async function loadIngredientsData() {
+            try {
+                // Pobierz olejki bazowe
+                const baseOilsSnapshot = await getDocs(collection(db, "baseOils"));
+                const baseOilsCount = baseOilsSnapshot.size;
+                
+                // Pobierz olejki eteryczne
+                const essentialOilsSnapshot = await getDocs(collection(db, "essentialOils"));
+                const essentialOilsCount = essentialOilsSnapshot.size;
+                
+                // Pobierz dodatki
+                const additivesSnapshot = await getDocs(collection(db, "additives"));
+                const additivesCount = additivesSnapshot.size;
+                
+                // Oblicz sumę wszystkich składników
+                const totalIngredients = baseOilsCount + essentialOilsCount + additivesCount;
+                
+                // Aktualizuj UI
+                document.getElementById('totalIngredients').textContent = totalIngredients;
+                document.getElementById('ingredientsChange').textContent = totalIngredients > 0 ? "+" + totalIngredients + "%" : "0%";
+            } catch (error) {
+                console.error("Error loading ingredients data:", error);
+            }
+        }
+
+        // Load samples data
+        async function loadSamplesData() {
+            try {
+                // Pobierz próbki (jeśli kolekcja istnieje)
+                try {
+                    const samplesSnapshot = await getDocs(collection(db, "samples"));
+                    const samplesCount = samplesSnapshot.size;
+                    
+                    // Aktualizuj UI
+                    document.getElementById('totalSamples').textContent = samplesCount;
+                    document.getElementById('samplesChange').textContent = samplesCount > 0 ? "+" + samplesCount + "%" : "0%";
+                    
+                    // Aktualizuj listę ostatnich próbek
+                    if (samplesCount > 0) {
+                        document.getElementById('noSamplesRow').classList.add('hidden');
+                        
+                        const samplesList = document.getElementById('samplesList');
+                        const recentSamplesQuery = query(collection(db, "samples"), orderBy("createdAt", "desc"), limit(3));
+                        const recentSamplesSnapshot = await getDocs(recentSamplesQuery);
+                        
+                        recentSamplesSnapshot.forEach((doc) => {
+                            const sample = doc.data();
+                            const row = createSampleRow(doc.id, sample);
+                            samplesList.appendChild(row);
+                        });
+                    }
+                } catch (error) {
+                    // Kolekcja może nie istnieć
+                    console.log("Samples collection may not exist yet:", error);
+                }
+            } catch (error) {
+                console.error("Error loading samples data:", error);
+            }
+        }
+
+        // Load ratings data
+        async function loadRatingsData() {
+            try {
+                // Pobierz oceny (jeśli kolekcja istnieje)
+                try {
+                    const ratingsSnapshot = await getDocs(collection(db, "ratings"));
+                    const ratingsCount = ratingsSnapshot.size;
+                    
+                    if (ratingsCount > 0) {
+                        let totalRating = 0;
+                        
+                        ratingsSnapshot.forEach((doc) => {
+                            const rating = doc.data();
+                            totalRating += rating.rating || 0;
+                        });
+                        
+                        const averageRating = (totalRating / ratingsCount).toFixed(1);
+                        
+                        // Aktualizuj UI
+                        document.getElementById('averageRating').textContent = averageRating;
+                        document.getElementById('ratingChange').textContent = "0%";
+                    }
+                } catch (error) {
+                    // Kolekcja może nie istnieć
+                    console.log("Ratings collection may not exist yet:", error);
+                }
+            } catch (error) {
+                console.error("Error loading ratings data:", error);
+            }
+        }
+
+        // Load inventory alerts
+        async function loadInventoryAlerts() {
+            try {
+                const alertsContainer = document.getElementById('alertsContainer');
+                const noAlertsMessage = document.getElementById('noAlertsMessage');
+                
+                let alertsCount = 0;
+                
+                // Pobierz olejki bazowe z niskim stanem
+                const baseOilsSnapshot = await getDocs(collection(db, "baseOils"));
+                baseOilsSnapshot.forEach((doc) => {
+                    const oil = doc.data();
+                    if (oil.quantity < oil.minQuantity) {
+                        alertsCount++;
+                        const alertElement = createAlertElement(oil.name, oil.quantity, oil.minQuantity, 'ml', oil.quantity < oil.minQuantity * 0.5);
+                        alertsContainer.appendChild(alertElement);
+                    }
+                });
+                
+                // Pobierz olejki eteryczne z niskim stanem
+                const essentialOilsSnapshot = await getDocs(collection(db, "essentialOils"));
+                essentialOilsSnapshot.forEach((doc) => {
+                    const oil = doc.data();
+                    if (oil.quantity < oil.minQuantity) {
+                        alertsCount++;
+                        const alertElement = createAlertElement(oil.name, oil.quantity, oil.minQuantity, 'ml', oil.quantity < oil.minQuantity * 0.5);
+                        alertsContainer.appendChild(alertElement);
+                    }
+                });
+                
+                // Pobierz dodatki z niskim stanem
+                const additivesSnapshot = await getDocs(collection(db, "additives"));
+                additivesSnapshot.forEach((doc) => {
+                    const additive = doc.data();
+                    if (additive.quantity < additive.minQuantity) {
+                        alertsCount++;
+                        const alertElement = createAlertElement(additive.name, additive.quantity, additive.minQuantity, additive.unit || 'ml', additive.quantity < additive.minQuantity * 0.5);
+                        alertsContainer.appendChild(alertElement);
+                    }
+                });
+                
+                // Aktualizuj licznik powiadomień
+                if (alertsCount > 0) {
+                    noAlertsMessage.classList.add('hidden');
+                    
+                    // Aktualizuj licznik powiadomień tylko jeśli nie zostały przeczytane
+                    const notificationsRead = localStorage.getItem('notificationsRead') === 'true';
+                    if (!notificationsRead) {
+                        const notificationCount = document.getElementById('notificationCount');
+                        notificationCount.textContent = alertsCount;
+                        notificationCount.classList.remove('hidden');
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading inventory alerts:", error);
+            }
+        }
+
+        // Create alert element
+        function createAlertElement(name, quantity, minQuantity, unit, isCritical) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = isCritical 
+                ? 'bg-red-50 border-l-4 border-red-500 p-4 flex items-center justify-between' 
+                : 'bg-yellow-50 border-l-4 border-yellow-500 p-4 flex items-center justify-between';
+            
+            alertDiv.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas ${isCritical ? 'fa-exclamation-circle text-red-500' : 'fa-exclamation-triangle text-yellow-500'} mr-3 text-lg"></i>
+                    <div>
+                        <p class="font-medium">${name}</p>
+                        <p class="text-sm text-gray-600">Pozostało tylko ${quantity}${unit} (${isCritical ? 'krytycznie niski stan' : 'poniżej minimum'})</p>
+                    </div>
+                </div>
+                <button class="text-frostblue hover:underline">Zamów</button>
+            `;
+            
+            return alertDiv;
+        }
+
+        // Create sample row
+        function createSampleRow(id, sample) {
+            const tr = document.createElement('tr');
+            tr.dataset.id = id;
+            
+            // Formatowanie daty
+            const createdAt = sample.createdAt ? new Date(sample.createdAt) : new Date();
+            const formattedDate = `${createdAt.getDate().toString().padStart(2, '0')}.${(createdAt.getMonth() + 1).toString().padStart(2, '0')}.${createdAt.getFullYear()}`;
+            
+            // Liczba składników
+            const ingredientsCount = sample.ingredients ? Object.keys(sample.ingredients).length : 0;
+            
+            // Ocena
+            const rating = sample.averageRating || 0;
+            
+            tr.innerHTML = `
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="font-medium text-gray-900">${sample.name}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formattedDate}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sample.createdBy || 'Nieznany'}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${ingredientsCount}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex text-yellow-400">
+                        ${generateStarRating(rating)}
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <a href="samples.html?id=${id}" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-eye"></i></a>
+                    <a href="samples.html?edit=${id}" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-edit"></i></a>
+                    <a href="#" class="text-red-600 hover:text-red-800" onclick="deleteSample('${id}')"><i class="fas fa-trash"></i></a>
+                </td>
+            `;
+            
+            return tr;
+        }
+
+        // Generate star rating HTML
+        function generateStarRating(rating) {
+            let starsHtml = '';
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            
+            for (let i = 0; i < 5; i++) {
+                if (i < fullStars) {
+                    starsHtml += '<i class="fas fa-star"></i>';
+                } else if (i === fullStars && hasHalfStar) {
+                    starsHtml += '<i class="fas fa-star-half-alt"></i>';
+                } else {
+                    starsHtml += '<i class="far fa-star"></i>';
+                }
+            }
+            
+            return starsHtml;
+        }
     </script>
 </body>
 </html>

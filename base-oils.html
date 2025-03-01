@@ -316,6 +316,7 @@
                 logoutButton.addEventListener('click', function(e) {
                     e.preventDefault();
                     sessionStorage.removeItem('currentUser');
+                    localStorage.removeItem('notificationsRead');
                     window.location.href = 'login.html';
                 });
             }
@@ -325,10 +326,19 @@
             const notificationCount = document.getElementById('notificationCount');
             
             if (notificationButton && notificationCount) {
+                // Sprawdź, czy powiadomienia zostały już przeczytane
+                const notificationsRead = localStorage.getItem('notificationsRead') === 'true';
+                
+                if (notificationsRead) {
+                    notificationCount.textContent = "0";
+                    notificationCount.classList.add('hidden');
+                }
+                
                 notificationButton.addEventListener('click', function() {
                     // Symulacja przeczytania powiadomień
                     notificationCount.textContent = "0";
                     notificationCount.classList.add('hidden');
+                    localStorage.setItem('notificationsRead', 'true');
                     alert('Wszystkie powiadomienia zostały oznaczone jako przeczytane');
                 });
             }
