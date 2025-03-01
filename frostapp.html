@@ -111,11 +111,11 @@
                         <i class="fas fa-user text-gray-600"></i>
                     </div>
                     <span class="ml-2 font-medium" id="userName">Jan Kowalski</span>
-                    <div class="ml-2 relative group">
-                        <button class="text-gray-600 hover:text-gray-800">
+                    <div class="ml-2 relative">
+                        <button id="userMenuButton" class="text-gray-600 hover:text-gray-800">
                             <i class="fas fa-chevron-down"></i>
                         </button>
-                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+                        <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="fas fa-user-circle mr-2"></i>Profil
                             </a>
@@ -333,6 +333,21 @@
             
             // Update UI with user info
             document.getElementById('userName').textContent = currentUser.name;
+            
+            // User menu toggle
+            const userMenuButton = document.getElementById('userMenuButton');
+            const userMenu = document.getElementById('userMenu');
+            
+            userMenuButton.addEventListener('click', function() {
+                userMenu.classList.toggle('hidden');
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
             
             // Logout functionality
             document.getElementById('logoutButton').addEventListener('click', function(e) {

@@ -119,17 +119,17 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Nazwa dodatku</label>
-                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required name="name">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Producent</label>
-                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required name="producer">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Ilość</label>
                             <div class="flex">
-                                <input type="number" class="w-full border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                                <select class="border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <input type="number" class="w-full border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required name="quantity">
+                                <select class="border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" name="unit">
                                     <option value="ml">ml</option>
                                     <option value="g">g</option>
                                     <option value="szt">szt</option>
@@ -139,8 +139,8 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Minimalna ilość</label>
                             <div class="flex">
-                                <input type="number" class="w-full border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                                <select class="border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <input type="number" class="w-full border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required name="minQuantity">
+                                <select class="border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" name="minUnit">
                                     <option value="ml">ml</option>
                                     <option value="g">g</option>
                                     <option value="szt">szt</option>
@@ -149,15 +149,15 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Data ważności</label>
-                            <input type="date" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <input type="date" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required name="expiryDate">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Numer partii</label>
-                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required name="batchNumber">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Kategoria</label>
-                            <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required name="category">
                                 <option value="">Wybierz kategorię</option>
                                 <option value="konserwant">Konserwant</option>
                                 <option value="emulgator">Emulgator</option>
@@ -169,16 +169,16 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">INCI</label>
-                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required name="inci">
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Zastosowanie</label>
-                        <textarea class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"></textarea>
+                        <textarea class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-24" name="usage"></textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Uwagi</label>
-                        <textarea class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"></textarea>
+                        <textarea class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-24" name="notes"></textarea>
                     </div>
                     <div class="flex justify-end space-x-3">
                         <button type="button" id="cancelAddAdditive" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
@@ -413,7 +413,9 @@
                     name: this.querySelector('input[name="name"]').value,
                     producer: this.querySelector('input[name="producer"]').value,
                     quantity: parseInt(this.querySelector('input[name="quantity"]').value),
+                    unit: this.querySelector('select[name="unit"]').value,
                     minQuantity: parseInt(this.querySelector('input[name="minQuantity"]').value),
+                    minUnit: this.querySelector('select[name="minUnit"]').value,
                     expiryDate: this.querySelector('input[name="expiryDate"]').value,
                     batchNumber: this.querySelector('input[name="batchNumber"]').value,
                     category: this.querySelector('select[name="category"]').value,
