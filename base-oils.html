@@ -45,6 +45,28 @@
                         <span>Dodatki</span>
                     </a>
                 </div>
+                <div class="space-y-2">
+                    <p class="text-gray-400 text-xs uppercase px-4 mt-6">Produkcja</p>
+                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-flask-vial"></i>
+                        <span>Próbki</span>
+                    </a>
+                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-star"></i>
+                        <span>Opinie</span>
+                    </a>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-gray-400 text-xs uppercase px-4 mt-6">System</p>
+                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-users"></i>
+                        <span>Użytkownicy</span>
+                    </a>
+                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-cog"></i>
+                        <span>Ustawienia</span>
+                    </a>
+                </div>
                 <!-- Pozostałe elementy menu takie same jak w głównym pliku -->
             </div>
         </nav>
@@ -79,15 +101,32 @@
                 </a>
             </div>
             <div class="flex items-center space-x-4">
-                <button class="text-gray-600 relative">
+                <button class="text-gray-600 relative" id="notificationButton">
                     <i class="fas fa-bell text-lg"></i>
-                    <span class="absolute -top-1 -right-1 bg-red-500 rounded-full w-4 h-4 text-xs flex items-center justify-center text-white">3</span>
+                    <span class="absolute -top-1 -right-1 bg-red-500 rounded-full w-4 h-4 text-xs flex items-center justify-center text-white" id="notificationCount">3</span>
                 </button>
                 <div class="flex items-center">
                     <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
                         <i class="fas fa-user text-gray-600"></i>
                     </div>
-                    <span class="ml-2 font-medium">Jan Kowalski</span>
+                    <span class="ml-2 font-medium" id="userName">Jan Kowalski</span>
+                    <div class="ml-2 relative">
+                        <button id="userMenuButton" class="text-gray-600 hover:text-gray-800">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-user-circle mr-2"></i>Profil
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-cog mr-2"></i>Ustawienia
+                            </a>
+                            <div class="border-t border-gray-100"></div>
+                            <a href="#" id="logoutButton" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Wyloguj
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
@@ -249,9 +288,49 @@
             }
             
             // Update UI with user info
-            const userNameElement = document.querySelector('.flex.items-center span.ml-2.font-medium');
+            const userNameElement = document.getElementById('userName');
             if (userNameElement) {
                 userNameElement.textContent = currentUser.name;
+            }
+
+            // User menu toggle
+            const userMenuButton = document.getElementById('userMenuButton');
+            const userMenu = document.getElementById('userMenu');
+            
+            if (userMenuButton && userMenu) {
+                userMenuButton.addEventListener('click', function() {
+                    userMenu.classList.toggle('hidden');
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+                        userMenu.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // Logout functionality
+            const logoutButton = document.getElementById('logoutButton');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sessionStorage.removeItem('currentUser');
+                    window.location.href = 'login.html';
+                });
+            }
+
+            // Notification functionality
+            const notificationButton = document.getElementById('notificationButton');
+            const notificationCount = document.getElementById('notificationCount');
+            
+            if (notificationButton && notificationCount) {
+                notificationButton.addEventListener('click', function() {
+                    // Symulacja przeczytania powiadomień
+                    notificationCount.textContent = "0";
+                    notificationCount.classList.add('hidden');
+                    alert('Wszystkie powiadomienia zostały oznaczone jako przeczytane');
+                });
             }
 
             // Add New Oil button handler

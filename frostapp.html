@@ -102,9 +102,9 @@
                 </div>
             </div>
             <div class="flex items-center space-x-4">
-                <button class="text-gray-600 relative">
+                <button class="text-gray-600 relative" id="notificationButton">
                     <i class="fas fa-bell text-lg"></i>
-                    <span class="absolute -top-1 -right-1 bg-red-500 rounded-full w-4 h-4 text-xs flex items-center justify-center text-white">3</span>
+                    <span class="absolute -top-1 -right-1 bg-red-500 rounded-full w-4 h-4 text-xs flex items-center justify-center text-white" id="notificationCount">3</span>
                 </button>
                 <div class="flex items-center">
                     <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
@@ -355,6 +355,19 @@
                 sessionStorage.removeItem('currentUser');
                 window.location.href = 'login.html';
             });
+
+            // Notification functionality
+            const notificationButton = document.getElementById('notificationButton');
+            const notificationCount = document.getElementById('notificationCount');
+            
+            if (notificationButton) {
+                notificationButton.addEventListener('click', function() {
+                    // Symulacja przeczytania powiadomień
+                    notificationCount.textContent = "0";
+                    notificationCount.classList.add('hidden');
+                    alert('Wszystkie powiadomienia zostały oznaczone jako przeczytane');
+                });
+            }
         });
     </script>
 </body>
