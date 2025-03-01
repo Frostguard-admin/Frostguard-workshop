@@ -231,7 +231,7 @@
 
     <script type="module">
         import { auth, db } from './firebase-config.js';
-        import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Check if user is logged in
         document.addEventListener('DOMContentLoaded', async function() {
@@ -375,7 +375,7 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sample.description || ''}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button onclick="editSample(this)" class="text-frostblue hover:text-blue-800 mr-3">
+                    <button onclick="editSample('${id}')" class="text-frostblue hover:text-blue-800 mr-3">
                         <i class="fas fa-edit"></i>
                     </button>
                     <button onclick="deleteSample('${id}')" class="text-red-600 hover:text-red-800">
@@ -426,8 +426,14 @@
         // Edit sample
         async function editSample(id) {
             try {
-                const sampleDoc = await doc(db, "samples", id);
-                const sample = (await getDoc(sampleDoc)).data();
+                const sampleDoc = doc(db, "samples", id);
+                const sampleSnapshot = await getDoc(sampleDoc);
+                
+                if (!sampleSnapshot.exists()) {
+                    throw new Error('Próbka nie istnieje');
+                }
+                
+                const sample = sampleSnapshot.data();
                 
                 const form = document.querySelector('form');
                 form.dataset.editId = id;
