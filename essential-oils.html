@@ -205,72 +205,6 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="font-medium text-gray-900">Olejek z drzewa sandałowego</div>
-                                <div class="text-sm text-gray-500">Santalum album</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">AromaWorld</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">15 ml</div>
-                                <div class="text-sm text-yellow-500">Niski stan (min. 20 ml)</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Destylacja parowa</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                    Niski stan
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <button class="text-frostblue hover:text-blue-800 mr-3" onclick="editOil(this)"><i class="fas fa-edit"></i></button>
-                                <button class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-plus"></i></button>
-                                <button class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="font-medium text-gray-900">Olejek lawendowy</div>
-                                <div class="text-sm text-gray-500">Lavandula angustifolia</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">NaturEssence</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">75 ml</div>
-                                <div class="text-sm text-green-500">Stan optymalny</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Destylacja parowa</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Dostępny
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <button class="text-frostblue hover:text-blue-800 mr-3" onclick="editOil(this)"><i class="fas fa-edit"></i></button>
-                                <button class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-plus"></i></button>
-                                <button class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="font-medium text-gray-900">Olejek z drzewa herbacianego</div>
-                                <div class="text-sm text-gray-500">Melaleuca alternifolia</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">PureNature</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">50 ml</div>
-                                <div class="text-sm text-green-500">Stan optymalny</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Destylacja parowa</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Dostępny
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <button class="text-frostblue hover:text-blue-800 mr-3" onclick="editOil(this)"><i class="fas fa-edit"></i></button>
-                                <button class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-plus"></i></button>
-                                <button class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -371,6 +305,22 @@
                 userNameElement.textContent = currentUser.name;
             }
 
+            // Add New Oil button handler
+            const addNewOilBtn = document.getElementById('addNewOilBtn');
+            const addOilForm = document.getElementById('addOilForm');
+            const cancelAddOil = document.getElementById('cancelAddOil');
+
+            if (addNewOilBtn && addOilForm && cancelAddOil) {
+                addNewOilBtn.addEventListener('click', () => {
+                    addOilForm.classList.remove('hidden');
+                });
+
+                cancelAddOil.addEventListener('click', () => {
+                    addOilForm.classList.add('hidden');
+                    addOilForm.querySelector('form').reset();
+                });
+            }
+
             // Load oils from Firestore
             await loadEssentialOils();
         });
@@ -380,13 +330,15 @@
             try {
                 const oilsSnapshot = await getDocs(collection(db, "essentialOils"));
                 const tbody = document.querySelector('tbody');
-                tbody.innerHTML = ''; // Clear existing rows
+                if (tbody) {
+                    tbody.innerHTML = ''; // Clear existing rows
 
-                oilsSnapshot.forEach((doc) => {
-                    const oil = doc.data();
-                    const row = createOilRow(doc.id, oil);
-                    tbody.appendChild(row);
-                });
+                    oilsSnapshot.forEach((doc) => {
+                        const oil = doc.data();
+                        const row = createOilRow(doc.id, oil);
+                        tbody.appendChild(row);
+                    });
+                }
             } catch (error) {
                 console.error("Error loading essential oils:", error);
                 alert('Błąd podczas wczytywania olejków eterycznych');
@@ -425,36 +377,36 @@
         }
 
         // Add new essential oil
-        document.querySelector('form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const newOil = {
-                name: this.querySelector('input[name="name"]').value,
-                botanicalName: this.querySelector('input[name="botanicalName"]').value,
-                producer: this.querySelector('input[name="producer"]').value,
-                quantity: parseInt(this.querySelector('input[name="quantity"]').value),
-                minQuantity: parseInt(this.querySelector('input[name="minQuantity"]').value),
-                extractionMethod: this.querySelector('select[name="extractionMethod"]').value,
-                countryOfOrigin: this.querySelector('input[name="countryOfOrigin"]').value,
-                expiryDate: this.querySelector('input[name="expiryDate"]').value,
-                batchNumber: this.querySelector('input[name="batchNumber"]').value,
-                therapeuticProperties: this.querySelector('input[name="therapeuticProperties"]').value,
-                notes: this.querySelector('textarea[name="notes"]').value,
-                createdAt: new Date().toISOString(),
-                createdBy: JSON.parse(sessionStorage.getItem('currentUser')).uid
-            };
-            
-            try {
-                await addDoc(collection(db, "essentialOils"), newOil);
-                alert('Olejek został dodany pomyślnie!');
-                this.reset();
-                document.getElementById('addOilForm').classList.add('hidden');
-                await loadEssentialOils();
-            } catch (error) {
-                console.error("Error adding essential oil:", error);
-                alert('Błąd podczas dodawania olejku');
-            }
-        });
+        const addForm = document.querySelector('#addOilForm form');
+        if (addForm) {
+            addForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const newOil = {
+                    name: this.querySelector('input[name="name"]').value,
+                    producer: this.querySelector('input[name="producer"]').value,
+                    quantity: parseInt(this.querySelector('input[name="quantity"]').value),
+                    minQuantity: parseInt(this.querySelector('input[name="minQuantity"]').value),
+                    expiryDate: this.querySelector('input[name="expiryDate"]').value,
+                    batchNumber: this.querySelector('input[name="batchNumber"]').value,
+                    category: this.querySelector('select[name="category"]').value,
+                    notes: this.querySelector('textarea[name="notes"]').value,
+                    createdAt: new Date().toISOString(),
+                    createdBy: JSON.parse(sessionStorage.getItem('currentUser')).email
+                };
+                
+                try {
+                    await addDoc(collection(db, "essentialOils"), newOil);
+                    alert('Olejek eteryczny został dodany pomyślnie!');
+                    this.reset();
+                    document.getElementById('addOilForm').classList.add('hidden');
+                    await loadEssentialOils();
+                } catch (error) {
+                    console.error("Error adding essential oil:", error);
+                    alert('Błąd podczas dodawania olejku: ' + error.message);
+                }
+            });
+        }
 
         // Edit essential oil
         window.editOil = async function(button) {
@@ -466,16 +418,14 @@
                 const oil = oilDoc.data();
                 
                 // Populate form with existing data
+                document.getElementById('editOilId').value = id;
                 document.getElementById('editOilName').value = oil.name;
-                document.getElementById('editOilBotanical').value = oil.botanicalName;
                 document.getElementById('editOilProducer').value = oil.producer;
                 document.getElementById('editOilQuantity').value = oil.quantity;
                 document.getElementById('editOilMinQuantity').value = oil.minQuantity;
-                document.getElementById('editOilExtraction').value = oil.extractionMethod;
-                document.getElementById('editOilOrigin').value = oil.countryOfOrigin;
                 document.getElementById('editOilExpiry').value = oil.expiryDate;
                 document.getElementById('editOilBatch').value = oil.batchNumber;
-                document.getElementById('editOilProperties').value = oil.therapeuticProperties;
+                document.getElementById('editOilCategory').value = oil.category;
                 document.getElementById('editOilNotes').value = oil.notes || '';
                 
                 // Show modal
@@ -492,18 +442,15 @@
                     
                     const updatedOil = {
                         name: document.getElementById('editOilName').value,
-                        botanicalName: document.getElementById('editOilBotanical').value,
                         producer: document.getElementById('editOilProducer').value,
                         quantity: parseInt(document.getElementById('editOilQuantity').value),
                         minQuantity: parseInt(document.getElementById('editOilMinQuantity').value),
-                        extractionMethod: document.getElementById('editOilExtraction').value,
-                        countryOfOrigin: document.getElementById('editOilOrigin').value,
                         expiryDate: document.getElementById('editOilExpiry').value,
                         batchNumber: document.getElementById('editOilBatch').value,
-                        therapeuticProperties: document.getElementById('editOilProperties').value,
+                        category: document.getElementById('editOilCategory').value,
                         notes: document.getElementById('editOilNotes').value,
                         updatedAt: new Date().toISOString(),
-                        updatedBy: JSON.parse(sessionStorage.getItem('currentUser')).uid
+                        updatedBy: JSON.parse(sessionStorage.getItem('currentUser')).email
                     };
                     
                     try {
@@ -536,23 +483,20 @@
             }
         };
 
-        // Toggle forms visibility
-        document.getElementById('addNewOilBtn').addEventListener('click', () => {
-            document.getElementById('addOilForm').classList.remove('hidden');
-        });
+        // Modal close handlers
+        const closeEditModal = document.getElementById('closeEditModal');
+        const cancelEditOil = document.getElementById('cancelEditOil');
+        const editOilModal = document.getElementById('editOilModal');
 
-        document.getElementById('cancelAddOil').addEventListener('click', () => {
-            document.getElementById('addOilForm').classList.add('hidden');
-        });
+        if (closeEditModal && cancelEditOil && editOilModal) {
+            closeEditModal.addEventListener('click', () => {
+                editOilModal.classList.add('hidden');
+            });
 
-        // Close edit modal
-        document.getElementById('closeEditModal').addEventListener('click', () => {
-            document.getElementById('editOilModal').classList.add('hidden');
-        });
-
-        document.getElementById('cancelEditOil').addEventListener('click', () => {
-            document.getElementById('editOilModal').classList.add('hidden');
-        });
+            cancelEditOil.addEventListener('click', () => {
+                editOilModal.classList.add('hidden');
+            });
+        }
     </script>
 </body>
 </html> 
