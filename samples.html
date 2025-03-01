@@ -157,11 +157,26 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Składniki</label>
-                            <select multiple class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required name="ingredients">
-                                <option value="baseOils">Olejki bazowe</option>
-                                <option value="essentialOils">Olejki eteryczne</option>
-                                <option value="additives">Dodatki</option>
-                            </select>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm text-gray-600 mb-1">Olejki bazowe</label>
+                                    <select multiple class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" name="baseOils">
+                                        <!-- Opcje będą dodawane dynamicznie -->
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-600 mb-1">Olejki eteryczne</label>
+                                    <select multiple class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" name="essentialOils">
+                                        <!-- Opcje będą dodawane dynamicznie -->
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-600 mb-1">Dodatki</label>
+                                    <select multiple class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" name="additives">
+                                        <!-- Opcje będą dodawane dynamicznie -->
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -216,7 +231,7 @@
 
     <script type="module">
         import { auth, db } from './firebase-config.js';
-        import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Check if user is logged in
         document.addEventListener('DOMContentLoaded', async function() {
@@ -275,9 +290,56 @@
                 addSampleForm.querySelector('form').reset();
             });
 
-            // Load samples from Firestore
+            // Load ingredients from all categories
+            await loadIngredients();
+            
+            // Load samples
             await loadSamples();
         });
+
+        // Load ingredients from all categories
+        async function loadIngredients() {
+            try {
+                // Load base oils
+                const baseOilsSnapshot = await getDocs(collection(db, "baseOils"));
+                const baseOilsSelect = document.querySelector('select[name="baseOils"]');
+                baseOilsSelect.innerHTML = '';
+                baseOilsSnapshot.forEach((doc) => {
+                    const oil = doc.data();
+                    const option = document.createElement('option');
+                    option.value = doc.id;
+                    option.textContent = oil.name;
+                    baseOilsSelect.appendChild(option);
+                });
+
+                // Load essential oils
+                const essentialOilsSnapshot = await getDocs(collection(db, "essentialOils"));
+                const essentialOilsSelect = document.querySelector('select[name="essentialOils"]');
+                essentialOilsSelect.innerHTML = '';
+                essentialOilsSnapshot.forEach((doc) => {
+                    const oil = doc.data();
+                    const option = document.createElement('option');
+                    option.value = doc.id;
+                    option.textContent = oil.name;
+                    essentialOilsSelect.appendChild(option);
+                });
+
+                // Load additives
+                const additivesSnapshot = await getDocs(collection(db, "additives"));
+                const additivesSelect = document.querySelector('select[name="additives"]');
+                additivesSelect.innerHTML = '';
+                additivesSnapshot.forEach((doc) => {
+                    const additive = doc.data();
+                    const option = document.createElement('option');
+                    option.value = doc.id;
+                    option.textContent = additive.name;
+                    additivesSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error("Error loading ingredients:", error);
+                alert('Błąd podczas wczytywania składników');
+            }
+        }
 
         // Load samples from Firestore
         async function loadSamples() {
@@ -306,11 +368,19 @@
                     <div class="font-medium text-gray-900">${sample.sampleName}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sample.series}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sample.ingredients.join(', ')}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <div>Olejki bazowe: ${sample.ingredients.baseOils.length}</div>
+                    <div>Olejki eteryczne: ${sample.ingredients.essentialOils.length}</div>
+                    <div>Dodatki: ${sample.ingredients.additives.length}</div>
+                </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sample.description}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-edit"></i></button>
-                    <button class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                    <button onclick="editSample('${id}')" class="text-frostblue hover:text-blue-800 mr-3">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button onclick="deleteSample('${id}')" class="text-red-600 hover:text-red-800">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </td>
             `;
             return tr;
@@ -323,23 +393,93 @@
             const newSample = {
                 sampleName: this.querySelector('input[name="sampleName"]').value,
                 series: this.querySelector('input[name="series"]').value,
-                ingredients: Array.from(this.querySelector('select[name="ingredients"]').selectedOptions).map(option => option.value),
+                ingredients: {
+                    baseOils: Array.from(this.querySelector('select[name="baseOils"]').selectedOptions).map(option => option.value),
+                    essentialOils: Array.from(this.querySelector('select[name="essentialOils"]').selectedOptions).map(option => option.value),
+                    additives: Array.from(this.querySelector('select[name="additives"]').selectedOptions).map(option => option.value)
+                },
                 description: this.querySelector('textarea[name="description"]').value,
                 createdAt: new Date().toISOString(),
                 createdBy: JSON.parse(sessionStorage.getItem('currentUser')).email
             };
             
             try {
-                await addDoc(collection(db, "samples"), newSample);
-                alert('Próbka została dodana pomyślnie!');
+                if (this.dataset.editId) {
+                    // Update existing sample
+                    await updateDoc(doc(db, "samples", this.dataset.editId), newSample);
+                    alert('Próbka została zaktualizowana pomyślnie!');
+                } else {
+                    // Add new sample
+                    await addDoc(collection(db, "samples"), newSample);
+                    alert('Próbka została dodana pomyślnie!');
+                }
                 this.reset();
+                delete this.dataset.editId;
                 document.getElementById('addSampleForm').classList.add('hidden');
                 await loadSamples();
             } catch (error) {
-                console.error("Error adding sample:", error);
-                alert('Błąd podczas dodawania próbki: ' + error.message);
+                console.error("Error saving sample:", error);
+                alert('Błąd podczas zapisywania próbki: ' + error.message);
             }
         });
+
+        // Edit sample
+        async function editSample(id) {
+            try {
+                const sampleDoc = await doc(db, "samples", id);
+                const sample = (await getDoc(sampleDoc)).data();
+                
+                const form = document.querySelector('form');
+                form.dataset.editId = id;
+                
+                form.querySelector('input[name="sampleName"]').value = sample.sampleName;
+                form.querySelector('input[name="series"]').value = sample.series;
+                form.querySelector('textarea[name="description"]').value = sample.description;
+                
+                // Set selected ingredients
+                const baseOilsSelect = form.querySelector('select[name="baseOils"]');
+                const essentialOilsSelect = form.querySelector('select[name="essentialOils"]');
+                const additivesSelect = form.querySelector('select[name="additives"]');
+                
+                sample.ingredients.baseOils.forEach(id => {
+                    const option = baseOilsSelect.querySelector(`option[value="${id}"]`);
+                    if (option) option.selected = true;
+                });
+                
+                sample.ingredients.essentialOils.forEach(id => {
+                    const option = essentialOilsSelect.querySelector(`option[value="${id}"]`);
+                    if (option) option.selected = true;
+                });
+                
+                sample.ingredients.additives.forEach(id => {
+                    const option = additivesSelect.querySelector(`option[value="${id}"]`);
+                    if (option) option.selected = true;
+                });
+                
+                document.getElementById('addSampleForm').classList.remove('hidden');
+            } catch (error) {
+                console.error("Error loading sample for edit:", error);
+                alert('Błąd podczas wczytywania próbki do edycji');
+            }
+        }
+
+        // Delete sample
+        async function deleteSample(id) {
+            if (confirm('Czy na pewno chcesz usunąć tę próbkę?')) {
+                try {
+                    await deleteDoc(doc(db, "samples", id));
+                    alert('Próbka została usunięta');
+                    await loadSamples();
+                } catch (error) {
+                    console.error("Error deleting sample:", error);
+                    alert('Błąd podczas usuwania próbki');
+                }
+            }
+        }
+
+        // Make functions available globally
+        window.editSample = editSample;
+        window.deleteSample = deleteSample;
     </script>
 </body>
 </html>

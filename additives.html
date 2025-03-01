@@ -47,11 +47,11 @@
                 </div>
                 <div class="space-y-2">
                     <p class="text-gray-400 text-xs uppercase px-4 mt-6">Produkcja</p>
-                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                    <a href="samples.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
                         <i class="fas fa-flask-vial"></i>
                         <span>Próbki</span>
                     </a>
-                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                    <a href="reviews.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
                         <i class="fas fa-star"></i>
                         <span>Opinie</span>
                     </a>
@@ -473,9 +473,9 @@
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button class="text-frostblue hover:text-blue-800 mr-3" onclick="editAdditive(this)"><i class="fas fa-edit"></i></button>
+                    <button onclick="editAdditive(this)" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-edit"></i></button>
                     <button class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-plus"></i></button>
-                    <button class="text-red-600 hover:text-red-800" onclick="deleteAdditive('${id}')"><i class="fas fa-trash"></i></button>
+                    <button onclick="deleteAdditive('${id}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
                 </td>
             `;
             return tr;
