@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodatki - FrostGuard Workshop</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .bg-frostblue-dark { background-color: #1e3a8a; }
+        .bg-frostblue { background-color: #3b82f6; }
+        .bg-silver { background-color: #e5e7eb; }
+        .bg-silver-dark { background-color: #9ca3af; }
+        .text-frostblue-dark { color: #1e3a8a; }
+        .text-frostblue { color: #3b82f6; }
+        .border-frostblue { border-color: #3b82f6; }
+        .hover-frostblue:hover { background-color: #2563eb; }
+    </style>
+</head>
+<body class="bg-gray-50 h-screen flex overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="bg-frostblue-dark text-white w-64 flex-shrink-0 hidden md:block">
+        <div class="p-4 flex items-center space-x-2">
+            <i class="fas fa-snowflake text-2xl"></i>
+            <span class="text-xl font-bold">FrostGuard</span>
+        </div>
+        <nav class="mt-8 px-4">
+            <div class="space-y-4">
+                <a href="frostapp.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <div class="space-y-2">
+                    <p class="text-gray-400 text-xs uppercase px-4 mt-6">Magazyn</p>
+                    <a href="base-oils.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-flask"></i>
+                        <span>Olejki bazowe</span>
+                    </a>
+                    <a href="essential-oils.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-leaf"></i>
+                        <span>Olejki eteryczne</span>
+                    </a>
+                    <a href="additives.html" class="block py-2.5 px-4 rounded bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-vial"></i>
+                        <span>Dodatki</span>
+                    </a>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-gray-400 text-xs uppercase px-4 mt-6">Produkcja</p>
+                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-flask-vial"></i>
+                        <span>Próbki</span>
+                    </a>
+                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-star"></i>
+                        <span>Opinie</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top navbar -->
+        <header class="bg-white border-b border-gray-200 flex items-center justify-between p-4">
+            <div class="flex items-center md:hidden">
+                <button class="text-gray-600">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+                <div class="ml-4">
+                    <i class="fas fa-snowflake text-frostblue-dark"></i>
+                    <span class="font-bold ml-2">FrostGuard</span>
+                </div>
+            </div>
+            <!-- Nawigacja między stronami -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="base-oils.html" class="text-gray-600 hover:text-frostblue flex items-center">
+                    <i class="fas fa-flask mr-1"></i>
+                    <span>Olejki bazowe</span>
+                </a>
+                <a href="essential-oils.html" class="text-gray-600 hover:text-frostblue flex items-center">
+                    <i class="fas fa-leaf mr-1"></i>
+                    <span>Olejki eteryczne</span>
+                </a>
+                <a href="additives.html" class="text-frostblue font-medium flex items-center">
+                    <i class="fas fa-vial mr-1"></i>
+                    <span>Dodatki</span>
+                </a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-600 relative">
+                    <i class="fas fa-bell text-lg"></i>
+                    <span class="absolute -top-1 -right-1 bg-red-500 rounded-full w-4 h-4 text-xs flex items-center justify-center text-white">3</span>
+                </button>
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                        <i class="fas fa-user text-gray-600"></i>
+                    </div>
+                    <span class="ml-2 font-medium">Jan Kowalski</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content area -->
+        <main class="flex-1 overflow-y-auto p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Dodatki</h1>
+                <button id="addNewAdditiveBtn" class="bg-frostblue text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center">
+                    <i class="fas fa-plus mr-2"></i>
+                    Dodaj nowy dodatek
+                </button>
+            </div>
+
+            <!-- Add New Additive Form (Hidden by default) -->
+            <div id="addAdditiveForm" class="bg-white rounded-lg shadow-md p-6 mb-6 hidden">
+                <h2 class="text-xl font-semibold mb-4">Dodaj nowy dodatek</h2>
+                <form class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nazwa dodatku</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Producent</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ilość</label>
+                            <div class="flex">
+                                <input type="number" class="w-full border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <select class="border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="ml">ml</option>
+                                    <option value="g">g</option>
+                                    <option value="szt">szt</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Minimalna ilość</label>
+                            <div class="flex">
+                                <input type="number" class="w-full border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <select class="border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="ml">ml</option>
+                                    <option value="g">g</option>
+                                    <option value="szt">szt</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Data ważności</label>
+                            <input type="date" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Numer partii</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Kategoria</label>
+                            <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="">Wybierz kategorię</option>
+                                <option value="konserwant">Konserwant</option>
+                                <option value="emulgator">Emulgator</option>
+                                <option value="witamina">Witamina</option>
+                                <option value="ekstrakt">Ekstrakt roślinny</option>
+                                <option value="barwnik">Barwnik</option>
+                                <option value="inne">Inne</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">INCI</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Zastosowanie</label>
+                        <textarea class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Uwagi</label>
+                        <textarea class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"></textarea>
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" id="cancelAddAdditive" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                            Anuluj
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-frostblue text-white rounded-md hover:bg-blue-600">
+                            Zapisz dodatek
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Additives List -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-4 border-b border-gray-200">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-1">
+                            <input type="text" placeholder="Szukaj dodatków..." class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                                <i class="fas fa-filter mr-1"></i> Filtry
+                            </button>
+                            <button class="px-3 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                                <i class="fas fa-download mr-1"></i> Eksport
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nazwa</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategoria</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stan magazynowy</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data ważności</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="font-medium text-gray-900">Witamina E</div>
+                                <div class="text-sm text-gray-500">Tocopherol</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Witamina</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">20 ml</div>
+                                <div class="text-sm text-yellow-500">Niski stan (min. 30 ml)</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-10-15</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Niski stan
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="text-frostblue hover:text-blue-800 mr-3" onclick="editAdditive(this)"><i class="fas fa-edit"></i></button>
+                                <button class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-plus"></i></button>
+                                <button class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="font-medium text-gray-900">Ekstrakt z aloesu</div>
+                                <div class="text-sm text-gray-500">Aloe Barbadensis Leaf Extract</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Ekstrakt roślinny</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">150 ml</div>
+                                <div class="text-sm text-green-500">Stan optymalny</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-06-20</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Dostępny
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="text-frostblue hover:text-blue-800 mr-3" onclick="editAdditive(this)"><i class="fas fa-edit"></i></button>
+                                <button class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-plus"></i></button>
+                                <button class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="font-medium text-gray-900">Polisorbat 80</div>
+                                <div class="text-sm text-gray-500">Polysorbate 80</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Emulgator</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">200 ml</div>
+                                <div class="text-sm text-green-500">Stan optymalny</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2026-03-10</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Dostępny
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="text-frostblue hover:text-blue-800 mr-3" onclick="editAdditive(this)"><i class="fas fa-edit"></i></button>
+                                <button class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-plus"></i></button>
+                                <button class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal do edycji dodatku -->
+    <div id="editAdditiveModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold">Edytuj dodatek</h2>
+                <button id="closeEditModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="editAdditiveForm" class="space-y-4">
+                <input type="hidden" id="editAdditiveId">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nazwa dodatku</label>
+                        <input type="text" id="editAdditiveName" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Producent</label>
+                        <input type="text" id="editAdditiveProducer" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Ilość</label>
+                        <div class="flex">
+                            <input type="number" id="editAdditiveQuantity" class="w-full border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <select id="editAdditiveUnit" class="border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="ml">ml</option>
+                                <option value="g">g</option>
+                                <option value="szt">szt</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Minimalna ilość</label>
+                        <div class="flex">
+                            <input type="number" id="editAdditiveMinQuantity" class="w-full border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <select id="editAdditiveMinUnit" class="border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="ml">ml</option>
+                                <option value="g">g</option>
+                                <option value="szt">szt</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Data ważności</label>
+                        <input type="date" id="editAdditiveExpiry" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Numer partii</label>
+                        <input type="text" id="editAdditiveBatch" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Kategoria</label>
+                        <select id="editAdditiveCategory" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <option value="">Wybierz kategorię</option>
+                            <option value="konserwant">Konserwant</option>
+                            <option value="emulgator">Emulgator</option>
+                            <option value="witamina">Witamina</option>
+                            <option value="ekstrakt">Ekstrakt roślinny</option>
+                            <option value="barwnik">Barwnik</option>
+                            <option value="inne">Inne</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">INCI</label>
+                        <input type="text" id="editAdditiveINCI" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Zastosowanie</label>
+                    <textarea id="editAdditiveUsage" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Uwagi</label>
+                    <textarea id="editAdditiveNotes" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"></textarea>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancelEditAdditive" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                        Anuluj
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-frostblue text-white rounded-md hover:bg-blue-600">
+                        Zapisz zmiany
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sprawdzenie czy użytkownik jest zalogowany
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(sessionStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Toggle add additive form
+        const addNewAdditiveBtn = document.getElementById('addNewAdditiveBtn');
+        const addAdditiveForm = document.getElementById('addAdditiveForm');
+        const cancelAddAdditive = document.getElementById('cancelAddAdditive');
+
+        addNewAdditiveBtn.addEventListener('click', () => {
+            addAdditiveForm.classList.remove('hidden');
+        });
+
+        cancelAddAdditive.addEventListener('click', () => {
+            addAdditiveForm.classList.add('hidden');
+        });
+
+        // Funkcje do obsługi edycji dodatku
+        const editAdditiveModal = document.getElementById('editAdditiveModal');
+        const closeEditModal = document.getElementById('closeEditModal');
+        const cancelEditAdditive = document.getElementById('cancelEditAdditive');
+        const editAdditiveForm = document.getElementById('editAdditiveForm');
+
+        function editAdditive(button) {
+            // Pobierz dane z wiersza tabeli
+            const row = button.closest('tr');
+            const nameElement = row.querySelector('td:first-child div:first-child');
+            const inciElement = row.querySelector('td:first-child div:last-child');
+            const categoryElement = row.querySelector('td:nth-child(2)');
+            const quantityElement = row.querySelector('td:nth-child(3) div:first-child');
+            const minQuantityText = row.querySelector('td:nth-child(3) div:last-child').textContent;
+            const expiryElement = row.querySelector('td:nth-child(4)');
+
+            // Wypełnij formularz danymi
+            document.getElementById('editAdditiveName').value = nameElement.textContent.trim();
+            document.getElementById('editAdditiveINCI').value = inciElement.textContent.trim();
+            document.getElementById('editAdditiveCategory').value = getCategoryValue(categoryElement.textContent.trim());
+            
+            // Przetwarzanie ilości
+            const quantityMatch = quantityElement.textContent.trim().match(/(\d+)\s*(\w+)/);
+            if (quantityMatch) {
+                document.getElementById('editAdditiveQuantity').value = quantityMatch[1];
+                document.getElementById('editAdditiveUnit').value = quantityMatch[2];
+            }
+            
+            // Przetwarzanie minimalnej ilości
+            const minMatch = minQuantityText.match(/min\.\s*(\d+)\s*(\w+)/);
+            if (minMatch) {
+                document.getElementById('editAdditiveMinQuantity').value = minMatch[1];
+                document.getElementById('editAdditiveMinUnit').value = minMatch[2];
+            } else {
+                document.getElementById('editAdditiveMinQuantity').value = "10"; // Domyślna wartość
+            }
+            
+            // Data ważności
+            document.getElementById('editAdditiveExpiry').value = expiryElement.textContent.trim();
+            
+            // Przykładowe wartości dla pozostałych pól
+            document.getElementById('editAdditiveProducer').value = "Producent";
+            document.getElementById('editAdditiveBatch').value = "LOT" + Math.floor(Math.random() * 10000);
+            document.getElementById('editAdditiveUsage').value = "Zastosowanie produktu";
+            document.getElementById('editAdditiveNotes').value = "Dodatkowe uwagi";
+
+            // Pokaż modal
+            editAdditiveModal.classList.remove('hidden');
+        }
+
+        function getCategoryValue(displayName) {
+            const categoryMap = {
+                'Konserwant': 'konserwant',
+                'Emulgator': 'emulgator',
+                'Witamina': 'witamina',
+                'Ekstrakt roślinny': 'ekstrakt',
+                'Barwnik': 'barwnik'
+            };
+            
+            return categoryMap[displayName] || 'inne';
+        }
+
+        // Obsługa zamykania modalu
+        closeEditModal.addEventListener('click', () => {
+            editAdditiveModal.classList.add('hidden');
+        });
+
+        cancelEditAdditive.addEventListener('click', () => {
+            editAdditiveModal.classList.add('hidden');
+        });
+
+        // Obsługa formularza edycji
+        editAdditiveForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Tutaj kod do zapisywania zmian
+            // W rzeczywistej aplikacji wysłalibyśmy dane do API
+            
+            // Symulacja zapisania zmian
+            alert('Zmiany zostały zapisane!');
+            editAdditiveModal.classList.add('hidden');
+        });
+    </script>
+</body>
+</html> 

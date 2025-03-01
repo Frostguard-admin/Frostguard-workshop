@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrostGuard Workshop</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .bg-frostblue-dark { background-color: #1e3a8a; }
+        .bg-frostblue { background-color: #3b82f6; }
+        .bg-silver { background-color: #e5e7eb; }
+        .bg-silver-dark { background-color: #9ca3af; }
+        .text-frostblue-dark { color: #1e3a8a; }
+        .text-frostblue { color: #3b82f6; }
+        .border-frostblue { border-color: #3b82f6; }
+        .hover-frostblue:hover { background-color: #2563eb; }
+    </style>
+</head>
+<body class="bg-gray-50 h-screen flex overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="bg-frostblue-dark text-white w-64 flex-shrink-0 hidden md:block">
+        <div class="p-4 flex items-center space-x-2">
+            <i class="fas fa-snowflake text-2xl"></i>
+            <span class="text-xl font-bold">FrostGuard</span>
+        </div>
+        <nav class="mt-8 px-4">
+            <div class="space-y-4">
+                <a href="#" class="block py-2.5 px-4 rounded bg-blue-700 flex items-center space-x-3">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <div class="space-y-2">
+                    <p class="text-gray-400 text-xs uppercase px-4 mt-6">Magazyn</p>
+                    <a href="base-oils.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-flask"></i>
+                        <span>Olejki bazowe</span>
+                    </a>
+                    <a href="essential-oils.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-leaf"></i>
+                        <span>Olejki eteryczne</span>
+                    </a>
+                    <a href="additives.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-vial"></i>
+                        <span>Dodatki</span>
+                    </a>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-gray-400 text-xs uppercase px-4 mt-6">Produkcja</p>
+                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-flask-vial"></i>
+                        <span>Próbki</span>
+                    </a>
+                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-star"></i>
+                        <span>Opinie</span>
+                    </a>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-gray-400 text-xs uppercase px-4 mt-6">System</p>
+                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-users"></i>
+                        <span>Użytkownicy</span>
+                    </a>
+                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-cog"></i>
+                        <span>Ustawienia</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top navbar -->
+        <header class="bg-white border-b border-gray-200 flex items-center justify-between p-4">
+            <div class="flex items-center md:hidden">
+                <button class="text-gray-600">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+                <div class="ml-4">
+                    <i class="fas fa-snowflake text-frostblue-dark"></i>
+                    <span class="font-bold ml-2">FrostGuard</span>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <!-- Nawigacja między stronami zamiast wyszukiwarki -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="base-oils.html" class="text-gray-600 hover:text-frostblue flex items-center">
+                        <i class="fas fa-flask mr-1"></i>
+                        <span>Olejki bazowe</span>
+                    </a>
+                    <a href="essential-oils.html" class="text-gray-600 hover:text-frostblue flex items-center">
+                        <i class="fas fa-leaf mr-1"></i>
+                        <span>Olejki eteryczne</span>
+                    </a>
+                    <a href="additives.html" class="text-gray-600 hover:text-frostblue flex items-center">
+                        <i class="fas fa-vial mr-1"></i>
+                        <span>Dodatki</span>
+                    </a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-600 relative">
+                    <i class="fas fa-bell text-lg"></i>
+                    <span class="absolute -top-1 -right-1 bg-red-500 rounded-full w-4 h-4 text-xs flex items-center justify-center text-white">3</span>
+                </button>
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                        <i class="fas fa-user text-gray-600"></i>
+                    </div>
+                    <span class="ml-2 font-medium" id="userName">Jan Kowalski</span>
+                    <div class="ml-2 relative group">
+                        <button class="text-gray-600 hover:text-gray-800">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-user-circle mr-2"></i>Profil
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-cog mr-2"></i>Ustawienia
+                            </a>
+                            <div class="border-t border-gray-100"></div>
+                            <a href="#" id="logoutButton" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Wyloguj
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content area -->
+        <main class="flex-1 overflow-y-auto p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard</h1>
+            
+            <!-- Stats cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">Składniki</p>
+                            <h2 class="text-3xl font-bold text-frostblue-dark">42</h2>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                            <i class="fas fa-flask text-frostblue text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <span class="text-green-500 flex items-center text-sm">
+                            <i class="fas fa-arrow-up mr-1"></i> 8%
+                        </span>
+                        <span class="text-gray-500 text-sm ml-2">od ostatniego miesiąca</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">Próbki</p>
+                            <h2 class="text-3xl font-bold text-frostblue-dark">18</h2>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                            <i class="fas fa-flask-vial text-frostblue text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <span class="text-green-500 flex items-center text-sm">
+                            <i class="fas fa-arrow-up mr-1"></i> 12%
+                        </span>
+                        <span class="text-gray-500 text-sm ml-2">od ostatniego miesiąca</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">Średnia ocena</p>
+                            <h2 class="text-3xl font-bold text-frostblue-dark">4.2</h2>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                            <i class="fas fa-star text-frostblue text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <span class="text-red-500 flex items-center text-sm">
+                            <i class="fas fa-arrow-down mr-1"></i> 3%
+                        </span>
+                        <span class="text-gray-500 text-sm ml-2">od ostatniego miesiąca</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Alerts -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Alerty magazynowe</h2>
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-circle text-red-500 mr-3 text-lg"></i>
+                            <div>
+                                <p class="font-medium">Olejek jojoba</p>
+                                <p class="text-sm text-gray-600">Pozostało tylko 50ml (poniżej minimum)</p>
+                            </div>
+                        </div>
+                        <button class="text-frostblue hover:underline">Zamów</button>
+                    </div>
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle text-yellow-500 mr-3 text-lg"></i>
+                            <div>
+                                <p class="font-medium">Olejek z drzewa sandałowego</p>
+                                <p class="text-sm text-gray-600">Pozostało tylko 15ml (niski stan)</p>
+                            </div>
+                        </div>
+                        <button class="text-frostblue hover:underline">Zamów</button>
+                    </div>
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle text-yellow-500 mr-3 text-lg"></i>
+                            <div>
+                                <p class="font-medium">Witamina E</p>
+                                <p class="text-sm text-gray-600">Pozostało tylko 20ml (niski stan)</p>
+                            </div>
+                        </div>
+                        <button class="text-frostblue hover:underline">Zamów</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent samples -->
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">Ostatnie próbki</h2>
+                    <a href="#" class="text-frostblue hover:underline">Zobacz wszystkie</a>
+                </div>
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nazwa</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data utworzenia</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Autor</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Liczba składników</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ocena</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Akcje</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="font-medium text-gray-900">Górska Bryza</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">27.02.2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jan Kowalski</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="#" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="font-medium text-gray-900">Zimowy Las</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">26.02.2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Piotr Nowak</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">7</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="#" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="font-medium text-gray-900">Mroźny Wiking</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">25.02.2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Anna Kowalska</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">4</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="#" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            
+            if (!currentUser) {
+                // Redirect to login page if not logged in
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Update UI with user info
+            document.getElementById('userName').textContent = currentUser.name;
+            
+            // Logout functionality
+            document.getElementById('logoutButton').addEventListener('click', function(e) {
+                e.preventDefault();
+                sessionStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>

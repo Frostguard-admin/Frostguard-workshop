@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olejki Bazowe - FrostGuard Workshop</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .bg-frostblue-dark { background-color: #1e3a8a; }
+        .bg-frostblue { background-color: #3b82f6; }
+        .bg-silver { background-color: #e5e7eb; }
+        .bg-silver-dark { background-color: #9ca3af; }
+        .text-frostblue-dark { color: #1e3a8a; }
+        .text-frostblue { color: #3b82f6; }
+        .border-frostblue { border-color: #3b82f6; }
+        .hover-frostblue:hover { background-color: #2563eb; }
+    </style>
+</head>
+<body class="bg-gray-50 h-screen flex overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="bg-frostblue-dark text-white w-64 flex-shrink-0 hidden md:block">
+        <div class="p-4 flex items-center space-x-2">
+            <i class="fas fa-snowflake text-2xl"></i>
+            <span class="text-xl font-bold">FrostGuard</span>
+        </div>
+        <nav class="mt-8 px-4">
+            <div class="space-y-4">
+                <a href="frostapp.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <div class="space-y-2">
+                    <p class="text-gray-400 text-xs uppercase px-4 mt-6">Magazyn</p>
+                    <a href="base-oils.html" class="block py-2.5 px-4 rounded bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-flask"></i>
+                        <span>Olejki bazowe</span>
+                    </a>
+                    <a href="essential-oils.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-leaf"></i>
+                        <span>Olejki eteryczne</span>
+                    </a>
+                    <a href="additives.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                        <i class="fas fa-vial"></i>
+                        <span>Dodatki</span>
+                    </a>
+                </div>
+                <!-- Pozostałe elementy menu takie same jak w głównym pliku -->
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top navbar -->
+        <header class="bg-white border-b border-gray-200 flex items-center justify-between p-4">
+            <div class="flex items-center md:hidden">
+                <button class="text-gray-600">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+                <div class="ml-4">
+                    <i class="fas fa-snowflake text-frostblue-dark"></i>
+                    <span class="font-bold ml-2">FrostGuard</span>
+                </div>
+            </div>
+            <!-- Nawigacja między stronami -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="base-oils.html" class="text-frostblue font-medium flex items-center">
+                    <i class="fas fa-flask mr-1"></i>
+                    <span>Olejki bazowe</span>
+                </a>
+                <a href="essential-oils.html" class="text-gray-600 hover:text-frostblue flex items-center">
+                    <i class="fas fa-leaf mr-1"></i>
+                    <span>Olejki eteryczne</span>
+                </a>
+                <a href="additives.html" class="text-gray-600 hover:text-frostblue flex items-center">
+                    <i class="fas fa-vial mr-1"></i>
+                    <span>Dodatki</span>
+                </a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-600 relative">
+                    <i class="fas fa-bell text-lg"></i>
+                    <span class="absolute -top-1 -right-1 bg-red-500 rounded-full w-4 h-4 text-xs flex items-center justify-center text-white">3</span>
+                </button>
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                        <i class="fas fa-user text-gray-600"></i>
+                    </div>
+                    <span class="ml-2 font-medium">Jan Kowalski</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content area -->
+        <main class="flex-1 overflow-y-auto p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Olejki Bazowe</h1>
+                <button id="addNewOilBtn" class="bg-frostblue text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center">
+                    <i class="fas fa-plus mr-2"></i>
+                    Dodaj nowy olejek
+                </button>
+            </div>
+
+            <!-- Add New Oil Form (Hidden by default) -->
+            <div id="addOilForm" class="bg-white rounded-lg shadow-md p-6 mb-6 hidden">
+                <h2 class="text-xl font-semibold mb-4">Dodaj nowy olejek bazowy</h2>
+                <form class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nazwa olejku</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Producent</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ilość (ml)</label>
+                            <input type="number" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Minimalna ilość (ml)</label>
+                            <input type="number" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Data ważności</label>
+                            <input type="date" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Numer partii</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Uwagi</label>
+                        <textarea class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"></textarea>
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" id="cancelAddOil" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                            Anuluj
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-frostblue text-white rounded-md hover:bg-blue-600">
+                            Zapisz olejek
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Oils List -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-4 border-b border-gray-200">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-1">
+                            <input type="text" placeholder="Szukaj olejków..." class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                                <i class="fas fa-filter mr-1"></i> Filtry
+                            </button>
+                            <button class="px-3 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                                <i class="fas fa-download mr-1"></i> Eksport
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nazwa</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producent</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stan magazynowy</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data ważności</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="font-medium text-gray-900">Olejek jojoba</div>
+                                <div class="text-sm text-gray-500">Nierafinowany</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">NaturalOils</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">50 ml</div>
+                                <div class="text-sm text-red-500">Poniżej minimum (100 ml)</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-12-31</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    Niski stan
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="text-frostblue hover:text-blue-800 mr-3" onclick="editOil(this)"><i class="fas fa-edit"></i></button>
+                                <button class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-plus"></i></button>
+                                <button class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="font-medium text-gray-900">Olejek migdałowy</div>
+                                <div class="text-sm text-gray-500">Słodki</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">EcoPress</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">250 ml</div>
+                                <div class="text-sm text-green-500">Stan optymalny</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-08-15</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Dostępny
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="text-frostblue hover:text-blue-800 mr-3" onclick="editOil(this)"><i class="fas fa-edit"></i></button>
+                                <button class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-plus"></i></button>
+                                <button class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Oil Modal (Hidden by default) -->
+    <div id="editOilModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold">Edytuj olejek bazowy</h2>
+                <button id="closeEditModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="editOilForm" class="space-y-4">
+                <input type="hidden" id="editOilId">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nazwa olejku</label>
+                        <input type="text" id="editOilName" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Producent</label>
+                        <input type="text" id="editOilProducer" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Ilość (ml)</label>
+                        <input type="number" id="editOilQuantity" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Minimalna ilość (ml)</label>
+                        <input type="number" id="editOilMinQuantity" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Data ważności</label>
+                        <input type="date" id="editOilExpiry" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Numer partii</label>
+                        <input type="text" id="editOilBatch" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Uwagi</label>
+                    <textarea id="editOilNotes" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"></textarea>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancelEditOil" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                        Anuluj
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-frostblue text-white rounded-md hover:bg-blue-600">
+                        Zapisz zmiany
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, db } from './firebase-config.js';
+        import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', async function() {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Update UI with user info
+            const userNameElement = document.querySelector('.flex.items-center span.ml-2.font-medium');
+            if (userNameElement) {
+                userNameElement.textContent = currentUser.name;
+            }
+
+            // Load oils from Firestore
+            await loadOils();
+        });
+
+        // Load oils from Firestore
+        async function loadOils() {
+            try {
+                const oilsSnapshot = await getDocs(collection(db, "baseOils"));
+                const tbody = document.querySelector('tbody');
+                tbody.innerHTML = ''; // Clear existing rows
+
+                oilsSnapshot.forEach((doc) => {
+                    const oil = doc.data();
+                    const row = createOilRow(doc.id, oil);
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error loading oils:", error);
+                alert('Błąd podczas wczytywania olejków');
+            }
+        }
+
+        // Create table row for oil
+        function createOilRow(id, oil) {
+            const tr = document.createElement('tr');
+            tr.dataset.id = id;
+            tr.innerHTML = `
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="font-medium text-gray-900">${oil.name}</div>
+                    <div class="text-sm text-gray-500">${oil.variant || ''}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${oil.producer}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">${oil.quantity} ml</div>
+                    <div class="text-sm ${oil.quantity < oil.minQuantity ? 'text-red-500' : 'text-green-500'}">
+                        ${oil.quantity < oil.minQuantity ? `Poniżej minimum (${oil.minQuantity} ml)` : 'Stan optymalny'}
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${oil.expiryDate}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${oil.quantity < oil.minQuantity ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">
+                        ${oil.quantity < oil.minQuantity ? 'Niski stan' : 'Dostępny'}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button class="text-frostblue hover:text-blue-800 mr-3" onclick="editOil(this)"><i class="fas fa-edit"></i></button>
+                    <button class="text-frostblue hover:text-blue-800 mr-3"><i class="fas fa-plus"></i></button>
+                    <button class="text-red-600 hover:text-red-800" onclick="deleteOil('${id}')"><i class="fas fa-trash"></i></button>
+                </td>
+            `;
+            return tr;
+        }
+
+        // Add new oil
+        document.querySelector('form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const newOil = {
+                name: this.querySelector('input[type="text"]').value,
+                producer: this.querySelectorAll('input[type="text"]')[1].value,
+                quantity: parseInt(this.querySelector('input[type="number"]').value),
+                minQuantity: parseInt(this.querySelectorAll('input[type="number"]')[1].value),
+                expiryDate: this.querySelector('input[type="date"]').value,
+                batchNumber: this.querySelectorAll('input[type="text"]')[2].value,
+                notes: this.querySelector('textarea').value,
+                createdAt: new Date().toISOString(),
+                createdBy: JSON.parse(sessionStorage.getItem('currentUser')).uid
+            };
+            
+            try {
+                await addDoc(collection(db, "baseOils"), newOil);
+                alert('Olejek został dodany pomyślnie!');
+                this.reset();
+                document.getElementById('addOilForm').classList.add('hidden');
+                await loadOils();
+            } catch (error) {
+                console.error("Error adding oil:", error);
+                alert('Błąd podczas dodawania olejku');
+            }
+        });
+
+        // Edit oil
+        window.editOil = async function(button) {
+            const row = button.closest('tr');
+            const id = row.dataset.id;
+            
+            // ... (reszta kodu edycji pozostaje taka sama, tylko dodajemy aktualizację w Firestore)
+            
+            document.getElementById('editOilForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const updatedOil = {
+                    name: document.getElementById('editOilName').value,
+                    producer: document.getElementById('editOilProducer').value,
+                    quantity: parseInt(document.getElementById('editOilQuantity').value),
+                    minQuantity: parseInt(document.getElementById('editOilMinQuantity').value),
+                    expiryDate: document.getElementById('editOilExpiry').value,
+                    batchNumber: document.getElementById('editOilBatch').value,
+                    notes: document.getElementById('editOilNotes').value,
+                    updatedAt: new Date().toISOString(),
+                    updatedBy: JSON.parse(sessionStorage.getItem('currentUser')).uid
+                };
+                
+                try {
+                    await updateDoc(doc(db, "baseOils", id), updatedOil);
+                    alert('Zmiany zostały zapisane pomyślnie!');
+                    document.getElementById('editOilModal').classList.add('hidden');
+                    await loadOils();
+                } catch (error) {
+                    console.error("Error updating oil:", error);
+                    alert('Błąd podczas aktualizacji olejku');
+                }
+            });
+        };
+
+        // Delete oil
+        window.deleteOil = async function(id) {
+            if (confirm('Czy na pewno chcesz usunąć ten olejek?')) {
+                try {
+                    await deleteDoc(doc(db, "baseOils", id));
+                    alert('Olejek został usunięty');
+                    await loadOils();
+                } catch (error) {
+                    console.error("Error deleting oil:", error);
+                    alert('Błąd podczas usuwania olejku');
+                }
+            }
+        };
+    </script>
+</body>
+</html> 
