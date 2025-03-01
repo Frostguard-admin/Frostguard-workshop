@@ -281,7 +281,7 @@
 
     <script type="module">
         import { auth, db } from './firebase-config.js';
-        import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Check if user is logged in
         document.addEventListener('DOMContentLoaded', async function() {
@@ -384,33 +384,57 @@
             const row = button.closest('tr');
             const id = row.dataset.id;
             
-            // ... (reszta kodu edycji pozostaje taka sama, tylko dodajemy aktualizację w Firestore)
-            
-            document.getElementById('editOilForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
+            try {
+                const oilDoc = await getDoc(doc(db, "baseOils", id));
+                const oil = oilDoc.data();
                 
-                const updatedOil = {
-                    name: document.getElementById('editOilName').value,
-                    producer: document.getElementById('editOilProducer').value,
-                    quantity: parseInt(document.getElementById('editOilQuantity').value),
-                    minQuantity: parseInt(document.getElementById('editOilMinQuantity').value),
-                    expiryDate: document.getElementById('editOilExpiry').value,
-                    batchNumber: document.getElementById('editOilBatch').value,
-                    notes: document.getElementById('editOilNotes').value,
-                    updatedAt: new Date().toISOString(),
-                    updatedBy: JSON.parse(sessionStorage.getItem('currentUser')).uid
-                };
+                // Populate form with existing data
+                document.getElementById('editOilName').value = oil.name;
+                document.getElementById('editOilProducer').value = oil.producer;
+                document.getElementById('editOilQuantity').value = oil.quantity;
+                document.getElementById('editOilMinQuantity').value = oil.minQuantity;
+                document.getElementById('editOilExpiry').value = oil.expiryDate;
+                document.getElementById('editOilBatch').value = oil.batchNumber;
+                document.getElementById('editOilNotes').value = oil.notes || '';
                 
-                try {
-                    await updateDoc(doc(db, "baseOils", id), updatedOil);
-                    alert('Zmiany zostały zapisane pomyślnie!');
-                    document.getElementById('editOilModal').classList.add('hidden');
-                    await loadOils();
-                } catch (error) {
-                    console.error("Error updating oil:", error);
-                    alert('Błąd podczas aktualizacji olejku');
-                }
-            });
+                // Show modal
+                document.getElementById('editOilModal').classList.remove('hidden');
+                
+                // Remove any existing event listeners
+                const form = document.getElementById('editOilForm');
+                const newForm = form.cloneNode(true);
+                form.parentNode.replaceChild(newForm, form);
+                
+                // Add new event listener
+                newForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const updatedOil = {
+                        name: document.getElementById('editOilName').value,
+                        producer: document.getElementById('editOilProducer').value,
+                        quantity: parseInt(document.getElementById('editOilQuantity').value),
+                        minQuantity: parseInt(document.getElementById('editOilMinQuantity').value),
+                        expiryDate: document.getElementById('editOilExpiry').value,
+                        batchNumber: document.getElementById('editOilBatch').value,
+                        notes: document.getElementById('editOilNotes').value,
+                        updatedAt: new Date().toISOString(),
+                        updatedBy: JSON.parse(sessionStorage.getItem('currentUser')).uid
+                    };
+                    
+                    try {
+                        await updateDoc(doc(db, "baseOils", id), updatedOil);
+                        alert('Zmiany zostały zapisane pomyślnie!');
+                        document.getElementById('editOilModal').classList.add('hidden');
+                        await loadOils();
+                    } catch (error) {
+                        console.error("Error updating oil:", error);
+                        alert('Błąd podczas aktualizacji olejku');
+                    }
+                });
+            } catch (error) {
+                console.error("Error getting oil:", error);
+                alert('Błąd podczas pobierania danych olejku');
+            }
         };
 
         // Delete oil
