@@ -531,11 +531,13 @@
                 document.getElementById('editAdditiveName').value = additive.name;
                 document.getElementById('editAdditiveProducer').value = additive.producer;
                 document.getElementById('editAdditiveQuantity').value = additive.quantity;
+                document.getElementById('editAdditiveUnit').value = additive.unit || 'ml';
                 document.getElementById('editAdditiveMinQuantity').value = additive.minQuantity;
+                document.getElementById('editAdditiveMinUnit').value = additive.minUnit || 'ml';
                 document.getElementById('editAdditiveExpiry').value = additive.expiryDate;
                 document.getElementById('editAdditiveBatch').value = additive.batchNumber;
                 document.getElementById('editAdditiveCategory').value = additive.category;
-                document.getElementById('editAdditiveInci').value = additive.inci;
+                document.getElementById('editAdditiveINCI').value = additive.inci || '';
                 document.getElementById('editAdditiveUsage').value = additive.usage || '';
                 document.getElementById('editAdditiveNotes').value = additive.notes || '';
                 
@@ -555,11 +557,13 @@
                         name: document.getElementById('editAdditiveName').value,
                         producer: document.getElementById('editAdditiveProducer').value,
                         quantity: parseInt(document.getElementById('editAdditiveQuantity').value),
+                        unit: document.getElementById('editAdditiveUnit').value,
                         minQuantity: parseInt(document.getElementById('editAdditiveMinQuantity').value),
+                        minUnit: document.getElementById('editAdditiveMinUnit').value,
                         expiryDate: document.getElementById('editAdditiveExpiry').value,
                         batchNumber: document.getElementById('editAdditiveBatch').value,
                         category: document.getElementById('editAdditiveCategory').value,
-                        inci: document.getElementById('editAdditiveInci').value,
+                        inci: document.getElementById('editAdditiveINCI').value,
                         usage: document.getElementById('editAdditiveUsage').value,
                         notes: document.getElementById('editAdditiveNotes').value,
                         updatedAt: new Date().toISOString(),

@@ -505,7 +505,7 @@
                 document.getElementById('editOilMinQuantity').value = oil.minQuantity;
                 document.getElementById('editOilExpiry').value = oil.expiryDate;
                 document.getElementById('editOilBatch').value = oil.batchNumber;
-                document.getElementById('editOilCategory').value = oil.category;
+                document.getElementById('editOilExtraction').value = oil.category;
                 document.getElementById('editOilNotes').value = oil.notes || '';
                 
                 // Show modal
@@ -527,7 +527,9 @@
                         minQuantity: parseInt(document.getElementById('editOilMinQuantity').value),
                         expiryDate: document.getElementById('editOilExpiry').value,
                         batchNumber: document.getElementById('editOilBatch').value,
-                        category: document.getElementById('editOilCategory').value,
+                        extraction: document.getElementById('editOilExtraction').value,
+                        origin: document.getElementById('editOilOrigin').value,
+                        properties: document.getElementById('editOilProperties').value,
                         notes: document.getElementById('editOilNotes').value,
                         updatedAt: new Date().toISOString(),
                         updatedBy: JSON.parse(sessionStorage.getItem('currentUser')).email

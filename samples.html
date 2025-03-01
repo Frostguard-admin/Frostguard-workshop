@@ -365,17 +365,17 @@
             tr.dataset.id = id;
             tr.innerHTML = `
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="font-medium text-gray-900">${sample.sampleName}</div>
+                    <div class="font-medium text-gray-900">${sample.name || 'Brak nazwy'}</div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sample.series}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sample.series || 'Brak serii'}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <div>Olejki bazowe: ${sample.ingredients.baseOils.length}</div>
-                    <div>Olejki eteryczne: ${sample.ingredients.essentialOils.length}</div>
-                    <div>Dodatki: ${sample.ingredients.additives.length}</div>
+                    <div>Olejki bazowe: ${sample.ingredients?.baseOils?.length || 0}</div>
+                    <div>Olejki eteryczne: ${sample.ingredients?.essentialOils?.length || 0}</div>
+                    <div>Dodatki: ${sample.ingredients?.additives?.length || 0}</div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sample.description}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sample.description || ''}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button onclick="editSample('${id}')" class="text-frostblue hover:text-blue-800 mr-3">
+                    <button onclick="editSample(this)" class="text-frostblue hover:text-blue-800 mr-3">
                         <i class="fas fa-edit"></i>
                     </button>
                     <button onclick="deleteSample('${id}')" class="text-red-600 hover:text-red-800">
@@ -391,7 +391,7 @@
             e.preventDefault();
             
             const newSample = {
-                sampleName: this.querySelector('input[name="sampleName"]').value,
+                name: this.querySelector('input[name="sampleName"]').value,
                 series: this.querySelector('input[name="series"]').value,
                 ingredients: {
                     baseOils: Array.from(this.querySelector('select[name="baseOils"]').selectedOptions).map(option => option.value),
@@ -432,7 +432,7 @@
                 const form = document.querySelector('form');
                 form.dataset.editId = id;
                 
-                form.querySelector('input[name="sampleName"]').value = sample.sampleName;
+                form.querySelector('input[name="sampleName"]').value = sample.name;
                 form.querySelector('input[name="series"]').value = sample.series;
                 form.querySelector('textarea[name="description"]').value = sample.description;
                 
