@@ -5,7 +5,6 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    // Tutaj trzeba będzie wstawić dane konfiguracyjne z Firebase Console
     apiKey: "AIzaSyDRV9B3lfZD0oh5rnlgEIXQw2-hzgrXDDM",
     authDomain: "frostguard-89b29.firebaseapp.com",
     projectId: "frostguard-89b29",
