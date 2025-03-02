@@ -342,6 +342,29 @@
                         <p class="text-gray-400 text-xs uppercase px-4 mt-6">Produkcja</p>
                         <a href="samples.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
                             <i class="fas fa-vials"></i>
+                            <span>Próbki</span>
+                        </a>
+                        <a href="reviews.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                            <i class="fas fa-star"></i>
+                            <span>Opinie</span>
+                        </a>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-gray-400 text-xs uppercase px-4 mt-6">System</p>
+                        <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                            <i class="fas fa-users"></i>
+                            <span>Użytkownicy</span>
+                        </a>
+                        <a href="#" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
+                            <i class="fas fa-cog"></i>
+                            <span>Ustawienia</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
     <script type="module">
         import { auth, db } from './firebase-config.js';
         import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -427,6 +450,44 @@
 
             // Load oils from Firestore
             await loadOils();
+
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            const mobileMenuContent = mobileMenu?.querySelector('.mobile-menu');
+
+            if (mobileMenuBtn && mobileMenu && closeMobileMenu && mobileMenuContent) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.remove('hidden');
+                    requestAnimationFrame(() => {
+                        mobileMenuContent.classList.add('active');
+                    });
+                });
+                
+                function closeMobileMenuHandler() {
+                    mobileMenuContent.classList.remove('active');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                }
+                
+                closeMobileMenu.addEventListener('click', closeMobileMenuHandler);
+                
+                mobileMenu.addEventListener('click', (e) => {
+                    if (e.target === mobileMenu) {
+                        closeMobileMenuHandler();
+                    }
+                });
+
+                // Zamykanie menu po kliknięciu w link
+                const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', closeMobileMenuHandler);
+                });
+            } else {
+                console.error('Nie znaleziono elementów menu mobilnego');
+            }
         });
 
         // Load oils from Firestore

@@ -499,27 +499,39 @@
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mobileMenu = document.getElementById('mobileMenu');
             const closeMobileMenu = document.getElementById('closeMobileMenu');
-            
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.remove('hidden');
-                setTimeout(() => {
-                    mobileMenu.querySelector('.mobile-menu').classList.add('active');
-                }, 10);
-            });
-            
-            function closeMobileMenuHandler() {
-                mobileMenu.querySelector('.mobile-menu').classList.remove('active');
-                setTimeout(() => {
-                    mobileMenu.classList.add('hidden');
-                }, 300);
-            }
-            
-            closeMobileMenu.addEventListener('click', closeMobileMenuHandler);
-            mobileMenu.addEventListener('click', (e) => {
-                if (e.target === mobileMenu) {
-                    closeMobileMenuHandler();
+            const mobileMenuContent = mobileMenu?.querySelector('.mobile-menu');
+
+            if (mobileMenuBtn && mobileMenu && closeMobileMenu && mobileMenuContent) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.remove('hidden');
+                    requestAnimationFrame(() => {
+                        mobileMenuContent.classList.add('active');
+                    });
+                });
+                
+                function closeMobileMenuHandler() {
+                    mobileMenuContent.classList.remove('active');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
                 }
-            });
+                
+                closeMobileMenu.addEventListener('click', closeMobileMenuHandler);
+                
+                mobileMenu.addEventListener('click', (e) => {
+                    if (e.target === mobileMenu) {
+                        closeMobileMenuHandler();
+                    }
+                });
+
+                // Zamykanie menu po kliknięciu w link
+                const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', closeMobileMenuHandler);
+                });
+            } else {
+                console.error('Nie znaleziono elementów menu mobilnego');
+            }
         });
 
         // Load essential oils from Firestore
