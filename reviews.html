@@ -48,7 +48,7 @@
                 <div class="space-y-2">
                     <p class="text-gray-400 text-xs uppercase px-4 mt-6">Produkcja</p>
                     <a href="samples.html" class="block py-2.5 px-4 rounded hover:bg-blue-700 flex items-center space-x-3">
-                        <i class="fas fa-flask-vial"></i>
+                        <i class="fas fa-vials"></i>
                         <span>Próbki</span>
                     </a>
                     <a href="reviews.html" class="block py-2.5 px-4 rounded bg-blue-700 flex items-center space-x-3">
@@ -179,18 +179,15 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Ocena</label>
                             <div class="flex items-center">
-                                <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required name="rating">
-                                    <option value="1">1</option>
-                                    <option value="1.5">1.5</option>
-                                    <option value="2">2</option>
-                                    <option value="2.5">2.5</option>
-                                    <option value="3">3</option>
-                                    <option value="3.5">3.5</option>
-                                    <option value="4">4</option>
-                                    <option value="4.5">4.5</option>
-                                    <option value="5">5</option>
-                                </select>
-                                <i class="fas fa-star text-yellow-400 ml-2"></i>
+                                <div class="flex items-center space-x-1">
+                                    <div class="stars-container flex">
+                                        ${Array(5).fill().map((_, i) => `
+                                            <i class="fas fa-star text-gray-300 cursor-pointer hover:text-yellow-400" data-rating="${i + 1}"></i>
+                                        `).join('')}
+                                    </div>
+                                    <input type="hidden" name="rating" value="0">
+                                    <span class="ml-2 text-sm text-gray-600">0/5</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -248,7 +245,7 @@
 
     <script type="module">
         import { auth, db } from './firebase-config.js';
-        import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { collection, getDocs, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Check if user is logged in
         document.addEventListener('DOMContentLoaded', async function() {
@@ -308,26 +305,27 @@
             });
 
             // Load samples for review selection
-            await loadSamplesForReview();
+            await loadSamples();
         });
 
         // Load samples for review selection
-        async function loadSamplesForReview() {
+        async function loadSamples() {
             try {
-                const samplesSnapshot = await getDocs(collection(db, "samples"));
+                const samplesRef = collection(db, 'samples');
+                const samplesSnapshot = await getDocs(samplesRef);
                 const sampleSelect = document.querySelector('select[name="sample"]');
-                sampleSelect.innerHTML = ''; // Clear existing options
-
-                samplesSnapshot.forEach((doc) => {
+                sampleSelect.innerHTML = '<option value="">Wybierz próbkę</option>';
+                
+                samplesSnapshot.forEach(doc => {
                     const sample = doc.data();
                     const option = document.createElement('option');
                     option.value = doc.id;
-                    option.textContent = sample.sampleName;
+                    option.textContent = sample.name || 'Brak nazwy';
                     sampleSelect.appendChild(option);
                 });
             } catch (error) {
-                console.error("Error loading samples for review:", error);
-                alert('Błąd podczas wczytywania próbek do opinii');
+                console.error('Błąd podczas ładowania próbek:', error);
+                alert('Wystąpił błąd podczas ładowania próbek. Spróbuj odświeżyć stronę.');
             }
         }
 
@@ -340,7 +338,7 @@
                 subjectName: this.querySelector('input[name="subjectName"]').value,
                 gender: this.querySelector('select[name="gender"]').value,
                 ageRange: this.querySelector('select[name="ageRange"]').value,
-                rating: parseFloat(this.querySelector('select[name="rating"]').value),
+                rating: parseFloat(this.querySelector('input[name="rating"]').value),
                 notes: this.querySelector('textarea[name="notes"]').value,
                 createdAt: new Date().toISOString(),
                 createdBy: JSON.parse(sessionStorage.getItem('currentUser')).email
@@ -395,6 +393,101 @@
                 </td>
             `;
             return tr;
+        }
+
+        // System oceniania gwiazdkami
+        const ratingContainer = document.querySelector('div:has(select[name="rating"])');
+        const ratingStarsHTML = `
+            <div class="flex items-center space-x-1">
+                <div class="stars-container flex">
+                    ${Array(5).fill().map((_, i) => `
+                        <i class="fas fa-star text-gray-300 cursor-pointer hover:text-yellow-400" data-rating="${i + 1}"></i>
+                    `).join('')}
+                </div>
+                <input type="hidden" name="rating" value="0">
+                <span class="ml-2 text-sm text-gray-600">0/5</span>
+            </div>
+        `;
+        ratingContainer.innerHTML = ratingStarsHTML;
+
+        // Obsługa systemu gwiazdek
+        const starsContainer = document.querySelector('.stars-container');
+        const ratingInput = document.querySelector('input[name="rating"]');
+        const ratingDisplay = document.querySelector('.text-sm.text-gray-600');
+        let currentRating = 0;
+
+        starsContainer.addEventListener('mousemove', (e) => {
+            if (e.target.matches('.fa-star')) {
+                const stars = starsContainer.querySelectorAll('.fa-star');
+                const rating = parseFloat(e.target.dataset.rating);
+                const position = e.offsetX / e.target.offsetWidth;
+                const isHalf = position <= 0.5;
+                
+                stars.forEach((star, index) => {
+                    if (index + 1 <= rating - 1) {
+                        star.classList.remove('text-gray-300');
+                        star.classList.add('text-yellow-400');
+                    } else if (index + 1 === rating && !isHalf) {
+                        star.classList.remove('text-gray-300');
+                        star.classList.add('text-yellow-400');
+                    } else if (index + 1 === rating && isHalf) {
+                        star.classList.remove('text-gray-300', 'text-yellow-400');
+                        star.classList.add('text-yellow-200');
+                    } else {
+                        star.classList.remove('text-yellow-400', 'text-yellow-200');
+                        star.classList.add('text-gray-300');
+                    }
+                });
+                
+                const finalRating = isHalf ? rating - 0.5 : rating;
+                ratingDisplay.textContent = `${finalRating}/5`;
+            }
+        });
+
+        starsContainer.addEventListener('click', (e) => {
+            if (e.target.matches('.fa-star')) {
+                const rating = parseFloat(e.target.dataset.rating);
+                const position = e.offsetX / e.target.offsetWidth;
+                currentRating = position <= 0.5 ? rating - 0.5 : rating;
+                ratingInput.value = currentRating;
+                ratingDisplay.textContent = `${currentRating}/5`;
+            }
+        });
+
+        starsContainer.addEventListener('mouseleave', () => {
+            const stars = starsContainer.querySelectorAll('.fa-star');
+            stars.forEach((star, index) => {
+                if (index + 1 <= Math.floor(currentRating)) {
+                    star.classList.remove('text-gray-300');
+                    star.classList.add('text-yellow-400');
+                } else if (index + 1 === Math.ceil(currentRating) && currentRating % 1 !== 0) {
+                    star.classList.remove('text-gray-300', 'text-yellow-400');
+                    star.classList.add('text-yellow-200');
+                } else {
+                    star.classList.remove('text-yellow-400', 'text-yellow-200');
+                    star.classList.add('text-gray-300');
+                }
+            });
+        });
+
+        // Obsługa powiadomień
+        const notificationButton = document.getElementById('notificationButton');
+        const notificationCount = document.getElementById('notificationCount');
+        
+        if (notificationButton) {
+            const notificationsRead = localStorage.getItem('notificationsRead') === 'true';
+            
+            if (notificationsRead) {
+                notificationCount.textContent = "0";
+                notificationCount.classList.add('hidden');
+            }
+            
+            notificationButton.addEventListener('click', function() {
+                notificationCount.textContent = "0";
+                notificationCount.classList.add('hidden');
+                localStorage.setItem('notificationsRead', 'true');
+                alert('Wszystkie powiadomienia zostały oznaczone jako przeczytane');
+            });
         }
     </script>
 </body>
